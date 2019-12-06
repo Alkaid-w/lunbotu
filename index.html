@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .banner {
+        width: 670px;
+        height: 329px;
+        position: relative;
+        overflow: hidden;
+      }
+      .banner a img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 0;
+        /* transition: opacity 0.5s,z-index 0.5s; */
+        transition: all 0.5s;
+      }
+      .banner a:nth-child(1) img {
+        opacity: 1;
+        z-index: 1;
+      }
+      .list {
+        list-style: none;
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
+        z-index: 2;
+      }
+      .list li {
+        width: 20px;
+        height: 20px;
+        background-color: hotpink;
+        border: 1px solid #ccc;
+        margin-right: 5px;
+        float: left;
+        border-radius: 50%;
+      }
+      ul .active {
+        background-color: red;
+      }
+      .icon-right,
+      .icon-left {
+        color: snow;
+        font-size: 14px;
+        font-weight: bold;
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        line-height: 40px;
+        z-index: 2;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(128, 121, 121, 0.5);
+        cursor: pointer;
+      }
+      .icon-right {
+        text-indent: 6px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        right: -15px;
+      }
+      .icon-left {
+        text-indent: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        left: -15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner">
+      <a href="#1"><img src="./images/gracetan_01.jpg" alt=""/></a>
+      <a href="#2"><img src="./images/gracetan_02.jpg" alt=""/></a>
+      <a href="#3"><img src="./images/gracetan_03.jpg" alt=""/></a>
+      <a href="#4"><img src="./images/gracetan_04.jpg" alt=""/></a>
+      <ul class="list">
+        <li data-ind="0"></li>
+        <li data-ind="1"></li>
+        <li data-ind="2"></li>
+        <li data-ind="3"></li>
+      </ul>
+      <span class="iconfont icon-left"></span>
+      <span class="iconfont icon-right"></span>
+    </div>
+    <script>
+      var allLi = document.querySelectorAll(".list li");
+      var allImg = document.querySelectorAll(".banner img");
+      var num = 0;
+      allLi.forEach(function(item) {
+        item.onclick = function() {
+          allLi.forEach(function(li, index) {
+            li.style.backgroundColor = "hotpink";
+            allImg[index].style.opacity = 0;
+            allImg[index].style.zIndex = 0;
+          });
+          this.style.backgroundColor = "red";
+          var index = this.getAttribute("data-ind");
+          num = index;
+          allImg[index].style.opacity = 1;
+          allImg[index].style.zIndex = 1;
+        };
+      });
+      document.querySelector(".icon-right").onclick = function() {
+        num++
+        if (num > allLi.length - 1) {
+          num = 0;
+        }
+        allLi.forEach(function(li, index) {
+          li.style.backgroundColor = "hotpink";
+          allImg[index].style.opacity = 0;
+          allImg[index].style.zIndex = 0;
+        });
+        allLi[num].style.backgroundColor = "red";
+        allImg[num].style.opacity = 1;
+        allImg[num].style.zIndex = 1;
+      };
+      document.querySelector(".icon-left").onclick = function() {
+        num--;
+        if (num < 0) {
+          num = allLi.length - 1;
+        }
+        allLi.forEach(function(li, index) {
+          li.style.backgroundColor = "hotpink";
+          allImg[index].style.opacity = 0;
+          allImg[index].style.zIndex = 0;
+        });
+        allLi[num].style.backgroundColor = "red";
+        // var index = this.getAttribute("data-ind");
+        allImg[num].style.opacity = 1;
+        allImg[num].style.zIndex = 1;
+      };
+      var x = setInterval(function() {
+        document.querySelector(".icon-right").onclick();
+      }, 1000);
+      document.querySelector(".banner").onmouseenter = function() {
+        clearInterval(x);
+      };
+      document.querySelector(".banner").mouseleave = function() {
+        var x = setInterval(function() {
+          document.querySelector(".icon-right").onclick();
+        }, 1000);
+      };
+    </script>
+  </body>
+</html>
